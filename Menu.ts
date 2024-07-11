@@ -1,9 +1,12 @@
 import readlinesync = require("readline-sync");
 import { colors } from "./src/util/Colors";
+
 import { ProdutoController } from "./src/controller/ProdutoController";
+
 import { Eletrodomesticos } from "./src/model/Eletrodomesticos";
 import { Roupa_Acessorios } from "./src/model/Roupa_Acessorios";
 import { OutroProduto } from "./src/model/OutroProduto";
+import { Veiculos } from "./src/model/Veiculos";
 
 export function main() {
 
@@ -17,13 +20,35 @@ export function main() {
     let descricao: string;
     let peso, garantia, tamanho, tecido: number;
 
+    let cor: string;
+    let ano, velocidade, veiculo, usado: number;
+
     //Tipos disponiveis / Limitadores
-    const tipoProdutos = ["Eletrodomesticos", "Roupas e/ou Acessorios", "Outro"];
+    const tipoProdutos = ["Eletrodomesticos", "Roupas e/ou Acessorios", "Veiculo", "Outro"];
     const tipoTamanhos = ["PP", "P", "M", "G", "GG", "Outro - (Digitar numero)"];
     const tipoTecidos = ["Couro", "Nylon", "La", "Algodao", "Outro"];
+    const tipoVeiculos = ["Carro", "Moto", "Barco", "Aviao"];
+
+    const foiUsado = ["Sim", "Nao"];
 
     //Trazendo CRUD
     const produtos: ProdutoController = new ProdutoController();
+
+    //Criando instancias por default
+    produtos.criar(new Eletrodomesticos(produtos.gerarID(), "Geladeira", 1, 7000, 600, 6));
+    produtos.criar(new Eletrodomesticos(produtos.gerarID(), "Maquina de lavar", 1, 2500, 400, 3));
+
+    produtos.criar(new Roupa_Acessorios(produtos.gerarID(), "Camisa", 2, 70, 4, 4));
+    produtos.criar(new Roupa_Acessorios(produtos.gerarID(), "Calça", 2, 150, 3, 5));
+    produtos.criar(new Roupa_Acessorios(produtos.gerarID(), "Sapato", 2, 200, 42, 1));
+
+    produtos.criar(new Veiculos(produtos.gerarID(), "Fiat uno", 3, 27000, 1, 2012, "Branco", 80, 2));
+    produtos.criar(new Veiculos(produtos.gerarID(), "StarLight", 3, 80000, 4, 2020, "Azul", 120, 2));
+    produtos.criar(new Veiculos(produtos.gerarID(), "Veleiro", 3, 27000, 3, 2008, "Ciano", 20, 1));
+
+    produtos.criar(new OutroProduto(produtos.gerarID(), "Caneca", 4, 50, "Uma caneca simples"));
+    produtos.criar(new OutroProduto(produtos.gerarID(), "Cobertor", 4, 250, "Uma coberta simples"));
+
 
     //Iniciando loop do menu
     while (true) {
@@ -91,7 +116,7 @@ export function main() {
                         console.log(`Selecione o Tamanho do Produto: `);
                         tamanho = readlinesync.keyInSelect(tipoTamanhos, "", { cancel: false }) + 1;
 
-                        console.log(`Selecione o Tecido do Produto: `);
+                        console.log(`Selecione o Tecido/Material do Produto: `);
                         tecido = readlinesync.keyInSelect(tipoTecidos, "", { cancel: false }) + 1;
 
                         if (tamanho == 6) {
@@ -103,6 +128,30 @@ export function main() {
                         break;
 
                     case 3:
+                        console.log(`Selecione o Tipo de Veiculo: `);
+                        veiculo = readlinesync.keyInSelect(tipoVeiculos, "", { cancel: false }) + 1;
+
+                        console.log(`Digite o Ano do Veiculo: `);
+                        ano = readlinesync.questionInt("");
+
+                        console.log(`Digite a Cor do Veiculo: `);
+                        cor = readlinesync.question("");
+
+                        if (veiculo == 1 || veiculo == 2) {
+                            console.log(`Digite a Velocidade Maxima do Veiculo em Km/h(Apenas numeros): `);
+                            velocidade = readlinesync.questionInt("");
+                        } else {
+                            console.log(`Digite a Velocidade Maxima do Veiculo em Nós(Apenas numeros): `);
+                            velocidade = readlinesync.questionInt("")
+                        }
+
+                        console.log(`Esse Veiculo ja Foi Usado: `);
+                        usado = readlinesync.keyInSelect(foiUsado, "", { cancel: false }) + 1;
+
+                        produtos.criar(new Veiculos(produtos.gerarID(), nome, tipo, preco, veiculo, ano, cor, velocidade, usado));
+                        break;
+
+                    case 4:
                         console.log(`Digite Uma Descrição para o Produto: `);
                         descricao = readlinesync.question("");
 
@@ -137,7 +186,7 @@ export function main() {
                 ID = readlinesync.questionInt("");
                 let produto = produtos.buscarNoArray(ID);
 
-                if (produto !== null){
+                if (produto !== null) {
                     //Perguntas padrão
                     console.log(`Digite o Nome do Produto: `);
                     nome = readlinesync.question("");
@@ -151,32 +200,56 @@ export function main() {
                         case 1:
                             console.log(`Digite o Peso do Produto em Kg (Somente numeros): `);
                             peso = readlinesync.questionInt("");
-    
+
                             console.log(`Digite o Tempo de Garantia em Meses do Produto (Somente numeros): `)
                             garantia = readlinesync.questionInt("");
-    
+
                             produtos.atualizar(new Eletrodomesticos(ID, nome, tipo, preco, peso, garantia));
                             break;
-    
+
                         case 2:
                             console.log(`Selecione o Tamanho do Produto: `);
                             tamanho = readlinesync.keyInSelect(tipoTamanhos, "", { cancel: false }) + 1;
-    
+
                             console.log(`Selecione o Tecido do Produto: `);
                             tecido = readlinesync.keyInSelect(tipoTecidos, "", { cancel: false }) + 1;
-    
+
                             if (tamanho == 6) {
                                 console.log(`Digite o Numero do Produto: `);
                                 tamanho = readlinesync.questionInt("");
                             }
-    
+
                             produtos.atualizar(new Roupa_Acessorios(ID, nome, tipo, preco, tamanho, tecido));
                             break;
-    
+
                         case 3:
+                            console.log(`Selecione o Tipo de Veiculo: `);
+                            veiculo = readlinesync.keyInSelect(tipoVeiculos, "", { cancel: false }) + 1;
+
+                            console.log(`Digite o Ano do Veiculo: `);
+                            ano = readlinesync.questionInt("");
+
+                            console.log(`Digite a Cor do Veiculo: `);
+                            cor = readlinesync.question("");
+
+                            if (veiculo == 1 || veiculo == 2) {
+                                console.log(`Digite a Velocidade Maxima do Veiculo em Km/h(Apenas numeros): `);
+                                velocidade = readlinesync.questionInt("");
+                            } else {
+                                console.log(`Digite a Velocidade Maxima do Veiculo em Nós(Apenas numeros): `);
+                                velocidade = readlinesync.questionInt("")
+                            }
+
+                            console.log(`Esse Veiculo ja Foi Usado: `);
+                            usado = readlinesync.keyInSelect(foiUsado, "", { cancel: false }) + 1;
+
+                            produtos.atualizar(new Veiculos(ID, nome, tipo, preco, veiculo, ano, cor, velocidade, usado));
+                            break;
+
+                        case 4:
                             console.log(`Digite Uma Descrição para o Produto: `);
                             descricao = readlinesync.question("");
-    
+
                             produtos.atualizar(new OutroProduto(ID, nome, tipo, preco, descricao));
                             break;
                     }

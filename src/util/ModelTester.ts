@@ -1,7 +1,7 @@
 import { ProdutoController } from "../controller/ProdutoController";
-import { Eletrodomesticos } from "./Eletrodomesticos";
-import { OutroProduto } from "./OutroProduto";
-import { Roupa_Acessorios } from "./Roupa_Acessorios";
+import { Eletrodomesticos } from "../model/Eletrodomesticos";
+import { OutroProduto } from "../model/OutroProduto";
+import { Roupa_Acessorios } from "../model/Roupa_Acessorios";
 
 //Trazendo CRUD
 const produtos: ProdutoController = new ProdutoController();

@@ -32,7 +32,7 @@ export class Eletrodomesticos extends Produto{
     //Visualizar
     public visualizar(): void {
         super.visualizar();
-        console.log(`Peso do Produto: ${this._peso}`);
+        console.log(`Peso do Produto: ${this._peso} kg`);
         console.log(`Tempo de Garantia: ${this._garantia} mes(es)`);
     }
 }

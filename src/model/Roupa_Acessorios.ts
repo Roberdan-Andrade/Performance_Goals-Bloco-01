@@ -88,6 +88,6 @@ export class Roupa_Acessorios extends Produto {
             console.log(`Tamanho do Produto: ${this._tamanho}`)
         }
 
-        console.log(`Tipo de Tecido do Produto: ${tecido}`);
+        console.log(`Tipo de Tecido/Material do Produto: ${tecido}`);
     }
 }
