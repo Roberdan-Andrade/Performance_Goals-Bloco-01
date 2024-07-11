@@ -52,6 +52,10 @@ export class Roupa_Acessorios extends Produto {
             case 5:
                 tamanho = "GG"
                 break;
+
+            case 6:
+                tamanho = ""
+                break;
         }
 
         let tecido: string = "";
@@ -78,7 +82,12 @@ export class Roupa_Acessorios extends Produto {
         }
 
         super.visualizar();
-        console.log(`Tamanho do Produto: ${tamanho}`);
+        if (tamanho !== "") {
+            console.log(`Tamanho do Produto: ${tamanho}`);
+        } else {
+            console.log(`Tamanho do Produto: ${this._tamanho}`)
+        }
+
         console.log(`Tipo de Tecido do Produto: ${tecido}`);
     }
 }
