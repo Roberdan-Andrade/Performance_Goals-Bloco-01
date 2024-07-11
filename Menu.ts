@@ -8,6 +8,8 @@ import { Roupa_Acessorios } from "./src/model/Roupa_Acessorios";
 import { OutroProduto } from "./src/model/OutroProduto";
 import { Veiculos } from "./src/model/Veiculos";
 
+import { EntradaInvalida } from "./src/exceptions/EntradaInvalida";
+
 export function main() {
 
     //Variaveis padrão
@@ -34,7 +36,7 @@ export function main() {
     //Trazendo CRUD
     const produtos: ProdutoController = new ProdutoController();
 
-    //Criando instancias por default
+    //Criando instancias default
     produtos.criar(new Eletrodomesticos(produtos.gerarID(), "Geladeira", 1, 7000, 600, 6));
     produtos.criar(new Eletrodomesticos(produtos.gerarID(), "Maquina de lavar", 1, 2500, 400, 3));
 
@@ -96,15 +98,24 @@ export function main() {
 
                 console.log(`Digite o Nome do Produto: `);
                 nome = readlinesync.question("");
+                if(nome == ""){
+                    throw new EntradaInvalida("Não pode registrar um produto sem nome!");
+                }
 
                 console.log(`Digite o Preço do Produto: `);
                 preco = readlinesync.questionFloat("");
+                if(preco == null || preco < 0){
+                    throw new EntradaInvalida("Não pode registrar um produto sem preço ou com preço negativo!");
+                }
 
                 //Perguntas especificas
                 switch (tipo) {
                     case 1:
                         console.log(`Digite o Peso do Produto em Kg (Somente numeros): `);
                         peso = readlinesync.questionInt("");
+                        if(peso == null || peso <= 0){
+                            throw new EntradaInvalida("Não pode registrar um produto sem peso!");
+                        }
 
                         console.log(`Digite o Tempo de Garantia em Meses do Produto (Somente numeros): `)
                         garantia = readlinesync.questionInt("");
@@ -122,6 +133,9 @@ export function main() {
                         if (tamanho == 6) {
                             console.log(`Digite o Numero do Produto: `);
                             tamanho = readlinesync.questionInt("");
+                            if(tamanho == null || tamanho < 0){
+                                throw new EntradaInvalida("Não pode registrar um produto sem numero de tamanho ou com numero negativo!");
+                            }
                         }
 
                         produtos.criar(new Roupa_Acessorios(produtos.gerarID(), nome, tipo, preco, tamanho, tecido));
@@ -133,16 +147,28 @@ export function main() {
 
                         console.log(`Digite o Ano do Veiculo: `);
                         ano = readlinesync.questionInt("");
+                        if(ano == null || ano < 0){
+                            throw new EntradaInvalida("Não pode registrar um veiculo sem ano ou com ano negativo!");
+                        }
 
                         console.log(`Digite a Cor do Veiculo: `);
                         cor = readlinesync.question("");
+                        if(cor == ""){
+                            throw new EntradaInvalida("Não pode registrar um veiculo sem cor!");
+                        }
 
                         if (veiculo == 1 || veiculo == 2) {
                             console.log(`Digite a Velocidade Maxima do Veiculo em Km/h(Apenas numeros): `);
                             velocidade = readlinesync.questionInt("");
+                            if(velocidade == null || velocidade <= 0){
+                                throw new EntradaInvalida("Não pode registrar um veiculo sem velocidade ou com velocidade negativa!");
+                            }
                         } else {
                             console.log(`Digite a Velocidade Maxima do Veiculo em Nós(Apenas numeros): `);
                             velocidade = readlinesync.questionInt("")
+                            if(velocidade == null || velocidade <= 0){
+                                throw new EntradaInvalida("Não pode registrar um veiculo sem velocidade ou com velocidade negativa!");
+                            }
                         }
 
                         console.log(`Esse Veiculo ja Foi Usado: `);
@@ -154,6 +180,9 @@ export function main() {
                     case 4:
                         console.log(`Digite Uma Descrição para o Produto: `);
                         descricao = readlinesync.question("");
+                        if(descricao == ""){
+                            throw new EntradaInvalida("Não pode registrar um produto sem descrição! ");
+                        }
 
                         produtos.criar(new OutroProduto(produtos.gerarID(), nome, tipo, preco, descricao));
                         break;
@@ -190,9 +219,15 @@ export function main() {
                     //Perguntas padrão
                     console.log(`Digite o Nome do Produto: `);
                     nome = readlinesync.question("");
+                    if(nome == ""){
+                        throw new EntradaInvalida("Não pode registrar um produto sem nome!");
+                    }
 
                     console.log(`Digite o Preço do Produto: `);
                     preco = readlinesync.questionFloat("");
+                    if(preco == null || preco < 0){
+                        throw new EntradaInvalida("Não pode registrar um produto sem preço ou com preço negativo!");
+                    }
 
                     //Perguntas especificas
                     let tipo = produto.tipo
@@ -200,6 +235,9 @@ export function main() {
                         case 1:
                             console.log(`Digite o Peso do Produto em Kg (Somente numeros): `);
                             peso = readlinesync.questionInt("");
+                            if(peso == null || peso <= 0){
+                                throw new EntradaInvalida("Não pode registrar um produto sem peso!");
+                            }
 
                             console.log(`Digite o Tempo de Garantia em Meses do Produto (Somente numeros): `)
                             garantia = readlinesync.questionInt("");
@@ -217,6 +255,9 @@ export function main() {
                             if (tamanho == 6) {
                                 console.log(`Digite o Numero do Produto: `);
                                 tamanho = readlinesync.questionInt("");
+                                if(tamanho == null || tamanho < 0){
+                                    throw new EntradaInvalida("Não pode registrar um produto sem numero de tamanho ou com numero negativo!");
+                                }
                             }
 
                             produtos.atualizar(new Roupa_Acessorios(ID, nome, tipo, preco, tamanho, tecido));
@@ -228,16 +269,28 @@ export function main() {
 
                             console.log(`Digite o Ano do Veiculo: `);
                             ano = readlinesync.questionInt("");
+                            if(ano == null || ano < 0){
+                                throw new EntradaInvalida("Não pode registrar um veiculo sem ano ou com ano negativo!");
+                            }
 
                             console.log(`Digite a Cor do Veiculo: `);
                             cor = readlinesync.question("");
+                            if(cor == ""){
+                                throw new EntradaInvalida("Não pode registrar um veiculo sem cor!");
+                            }
 
                             if (veiculo == 1 || veiculo == 2) {
                                 console.log(`Digite a Velocidade Maxima do Veiculo em Km/h(Apenas numeros): `);
                                 velocidade = readlinesync.questionInt("");
+                                if(velocidade == null || velocidade <= 0){
+                                    throw new EntradaInvalida("Não pode registrar um veiculo sem velocidade ou com velocidade negativa!");
+                                }
                             } else {
                                 console.log(`Digite a Velocidade Maxima do Veiculo em Nós(Apenas numeros): `);
                                 velocidade = readlinesync.questionInt("")
+                                if(velocidade == null || velocidade <= 0){
+                                    throw new EntradaInvalida("Não pode registrar um veiculo sem velocidade ou com velocidade negativa!");
+                                }
                             }
 
                             console.log(`Esse Veiculo ja Foi Usado: `);
@@ -249,6 +302,9 @@ export function main() {
                         case 4:
                             console.log(`Digite Uma Descrição para o Produto: `);
                             descricao = readlinesync.question("");
+                            if(descricao == ""){
+                                throw new EntradaInvalida("Não pode registrar um produto sem descrição! ");
+                            }
 
                             produtos.atualizar(new OutroProduto(ID, nome, tipo, preco, descricao));
                             break;
